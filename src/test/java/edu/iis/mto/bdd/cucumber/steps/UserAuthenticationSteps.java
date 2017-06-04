@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import edu.iis.mto.bdd.cucumber.pages.HomePage;
 import edu.iis.mto.bdd.cucumber.pages.LoginPage;
+import edu.iis.mto.bdd.cucumber.workflowsteps.AuthenticationWorkFlowSteps;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,10 +20,12 @@ import cucumber.api.java.en.When;
 public class UserAuthenticationSteps {
 
     private WebDriver driver;
+    private AuthenticationWorkFlowSteps authenticationWorkFlowSteps;
 
     @Before
     public void init() {
         driver = new FirefoxDriver();
+        authenticationWorkFlowSteps = new AuthenticationWorkFlowSteps(driver);
     }
 
     @Given("^(.*) is a registered Frequent Flyer$")
@@ -30,23 +33,17 @@ public class UserAuthenticationSteps {
 
     @When("^(.*) authenticates with a valid email address and password$")
     public void whenJaneAuthenticatesWithAValidEmailAddressAndPassword(FrequentFlyerMember user) {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.setup();
-        loginPage.logIn(user);
+        authenticationWorkFlowSteps.authenticationWithValidEmailAndPassword(user);
     }
 
     @Then("^(.*) should be given access to (?:her|his) account$")
     public void thenTheUserShouldBeGivenAccessToAccount(FrequentFlyerMember user) {
-        HomePage homePage = new HomePage(driver);
-
-        assertThat(homePage.getWelcomeMessage(), equalTo("Witaj " + user.getFirstName()));
+        authenticationWorkFlowSteps.checkWelcomeMessage(user);
     }
 
     @Given("^(.*) has logged on$")
     public void aUserHasLoggedOnAs(FrequentFlyerMember user) {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.setup();
-        loginPage.logIn(user);
+        authenticationWorkFlowSteps.authenticationWithValidEmailAndPassword(user);
     }
 
     @When("^(?:.*) views the home page$")
