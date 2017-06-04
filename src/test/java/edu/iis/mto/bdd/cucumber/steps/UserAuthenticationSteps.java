@@ -7,6 +7,7 @@ import edu.iis.mto.bdd.cucumber.pages.HomePage;
 import edu.iis.mto.bdd.cucumber.pages.LoginPage;
 import edu.iis.mto.bdd.cucumber.workflowsteps.AuthenticationWorkFlowSteps;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
+import net.thucydides.core.annotations.Steps;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -20,6 +21,8 @@ import cucumber.api.java.en.When;
 public class UserAuthenticationSteps {
 
     private WebDriver driver;
+
+    @Steps
     private AuthenticationWorkFlowSteps authenticationWorkFlowSteps;
 
     @Before
