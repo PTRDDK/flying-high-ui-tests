@@ -3,6 +3,7 @@ package edu.iis.mto.bdd.cucumber.steps;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import edu.iis.mto.bdd.cucumber.pages.HomePage;
 import edu.iis.mto.bdd.cucumber.pages.LoginPage;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
 import org.openqa.selenium.By;
@@ -36,15 +37,16 @@ public class UserAuthenticationSteps {
 
     @Then("^(.*) should be given access to (?:her|his) account$")
     public void thenTheUserShouldBeGivenAccessToAccount(FrequentFlyerMember user) {
-        assertThat(driver.findElement(By.id("welcome-message")).getText(), equalTo("Witaj " + user.getFirstName()));
+        HomePage homePage = new HomePage(driver);
+
+        assertThat(homePage.getWelcomeMessage(), equalTo("Witaj " + user.getFirstName()));
     }
 
     @Given("^(.*) has logged on$")
     public void aUserHasLoggedOnAs(FrequentFlyerMember user) {
-        driver.get("http://localhost:8080/#/welcome");
-        driver.findElement(By.name("email")).sendKeys(user.getEmail());
-        driver.findElement(By.name("password")).sendKeys(user.getPassword());
-        driver.findElement(By.name("signin")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setup();
+        loginPage.logIn(user);
     }
 
     @When("^(?:.*) views the home page$")
