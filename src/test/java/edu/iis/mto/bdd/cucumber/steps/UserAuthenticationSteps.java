@@ -3,6 +3,7 @@ package edu.iis.mto.bdd.cucumber.steps;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import edu.iis.mto.bdd.cucumber.pages.LoginPage;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,10 +29,9 @@ public class UserAuthenticationSteps {
 
     @When("^(.*) authenticates with a valid email address and password$")
     public void whenJaneAuthenticatesWithAValidEmailAddressAndPassword(FrequentFlyerMember user) {
-        driver.get("http://localhost:8080/#/welcome");
-        driver.findElement(By.name("email")).sendKeys(user.getEmail());
-        driver.findElement(By.name("password")).sendKeys(user.getPassword());
-        driver.findElement(By.name("signin")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setup();
+        loginPage.logIn(user);
     }
 
     @Then("^(.*) should be given access to (?:her|his) account$")
